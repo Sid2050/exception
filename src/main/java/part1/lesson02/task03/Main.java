@@ -2,6 +2,8 @@ package part1.lesson02.task03;
 
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
+
 /**
  * Основной класс. Создаёт массив объектов Person и сортирует их двумя разными способами.
  * @autor Aleksey Danilchik
@@ -11,10 +13,10 @@ public class Main {
 
     public static void main(String[] args) {
         LOGGER.info("Задание 3. Программа запущена");
-        GeneratePerson gp = new GeneratePerson(10);
+        GeneratePerson gp = new GeneratePerson(20);
         Person[] persons = gp.generationAndFillArray();
 
-        BubbleSort bubbleSort = new BubbleSort(persons);
+        BubbleSort bubbleSort = new BubbleSort(Arrays.copyOf(persons, persons.length));
         try {
             bubbleSort.sortingObject();
             bubbleSort.display();
@@ -28,7 +30,7 @@ public class Main {
 
         System.out.println();
 
-        SelectSort selectSort = new SelectSort(persons);
+        SelectSort selectSort = new SelectSort(Arrays.copyOf(persons, persons.length));
         try {
             selectSort.sortingObject();
             selectSort.display();

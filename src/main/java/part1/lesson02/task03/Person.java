@@ -4,7 +4,7 @@ package part1.lesson02.task03;
  * Класс персоны со свойствами <b>age</b>, <b>sex</b> и <b>name</b>.
  * @autor Aleksey Danilchik
  */
-public class Person {
+public class Person implements Comparable<Person> {
     private int age;
     private Sex sex;
     private String name;
@@ -73,5 +73,30 @@ public class Person {
      */
     public boolean isEqualsNameAndAge(Person p) {
         return (name.equals(p.getName())) && (age == p.getAge());
+    }
+
+    /**
+     * Метод сортирует объект по следующим правилам:
+     * <ul>
+     * <li>Первые идут мужчины</li>
+     * <li>Выше в списке тот, кто более старший</li>
+     * <li>Имена сортируются по алфавиту</li>
+     * </ul>
+     * @param o
+     * @return
+     */
+    @Override
+    public int compareTo(Person o) {
+        int result;
+        result = (sex == Sex.WOMAN && o.sex == Sex.MAN) ? 1 : 0;
+        if (result == 0)
+            result = (sex == Sex.MAN && o.sex == Sex.WOMAN) ? -1 : 0;
+        if (result != 0)
+            return result;
+        result = Integer.compare(o.age, age);
+        if (result != 0)
+            return result;
+        result = o.name.compareTo(name);
+        return result;
     }
 }
