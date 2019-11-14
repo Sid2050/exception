@@ -5,7 +5,7 @@ import part1.lesson03.task03.exceptions.TryAddObjectException;
 import java.util.*;
 
 /**
- * Класс принимает массив объектов типа {@code Number}, заполняет коллекцию {@code HashSet},
+ * Класс принимает массив объектов типа {@code T extends Number}, заполняет коллекцию {@code HashSet},
  * исключая дубликаты. В данном классе реализованы методы:
  * <ul>
  * <li>{@link MathBox#summator()} - возвращает сумму всех чисел коллекции</li>
@@ -14,28 +14,28 @@ import java.util.*;
  * </ul>
  * @autor Aleksey Danilchik
  */
-public class MathBox extends ObjectBox {
+public class MathBox<T extends Number> extends ObjectBox {
     private UUID id;
-    private Set<Number> numberSet;
+    private Set<T> set;
 
     public MathBox() {
         id = UUID.randomUUID();
-        numberSet = new HashSet<>();
+        set = new HashSet<>();
     }
 
     /**
      * Конструктор - инициализирует коллекцию и заполняет её данными из массива.
      * @param arr массив объектов типа {@code Number}.
      */
-    public MathBox(Number[] arr) {
+    public MathBox(T[] arr) throws TryAddObjectException {
         id = UUID.randomUUID();
-        numberSet = new HashSet<>();
+        set = new HashSet<>();
         fillSet(arr);
     }
 
-    private void fillSet(Number[] arr) {
+    private void fillSet(T[] arr) throws TryAddObjectException {
         for (int i = 0; i < arr.length; i++) {
-            numberSet.add(arr[i]);
+            set.add(arr[i]);
         }
     }
 
@@ -45,7 +45,7 @@ public class MathBox extends ObjectBox {
      */
     public double summator() {
         double sum = 0;
-        for (Number number : numberSet) {
+        for (T number : set) {
             sum += number.doubleValue();
         }
         return sum;
@@ -57,9 +57,9 @@ public class MathBox extends ObjectBox {
      * @return коллекция значений типа {@code Number}, которая является результатом
      *         деления на {@code devider}.
      */
-    public List<Number> splitter(int devider) {
-        List<Number> temp = new ArrayList<>();
-        for (Number number : numberSet) {
+    public List<Double> splitter(int devider) {
+        List<Double> temp = new ArrayList<>();
+        for (T number : set) {
             temp.add(number.doubleValue() / devider);
         }
         return temp;
@@ -72,27 +72,27 @@ public class MathBox extends ObjectBox {
      *         {@code false} в остальных случаях.
      */
     public boolean removeIntFromCollection(Integer integer) {
-        for (Number number : numberSet) {
+        for (T number : set) {
             if (integer.equals(number)) {
-                numberSet.remove(number);
+                set.remove(number);
                 return true;
             }
         }
         return false;
     }
 
+    /**
+     * Метод добавляет объект в коллекцию.
+     * @param o объект, который необходимо добавить.
+     * @return {@code true}, если объект добавлен.
+     * @throws TryAddObjectException возникает при попытке положить объект не типа {@code Number} в коллекцию.
+     */
     @Override
     public boolean addObject(Object o) throws TryAddObjectException {
-        if (o instanceof Object)
-            throw new TryAddObjectException("Попытка добавить Object");
-        return numberSet.add((Number) o);
-    }
-
-    @Override
-    public String dump() {
-        return "MathBox{" +
-                "numberSet=" + numberSet +
-                '}';
+        if (o instanceof Number)
+            return super.addObject(o);
+        else
+            throw new TryAddObjectException("Попытка положить Object в коллекцию.");
     }
 
     @Override
@@ -103,7 +103,7 @@ public class MathBox extends ObjectBox {
         MathBox mathBox = (MathBox) o;
 
         if (id != null ? !id.equals(mathBox.id) : mathBox.id != null) return false;
-        return numberSet != null ? numberSet.equals(mathBox.numberSet) : mathBox.numberSet == null;
+        return set != null ? set.equals(mathBox.set) : mathBox.set == null;
     }
 
     @Override
