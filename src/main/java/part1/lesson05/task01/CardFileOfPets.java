@@ -41,11 +41,7 @@ public class CardFileOfPets implements CardFile<Pet> {
     }
 
     private boolean checkForDuplicate(Pet item) {
-        if (petMap.containsKey(item.getId())) {
-            Pet pet = petMap.get(item.getId());
-            return pet.equals(item);
-        }
-        return false;
+        return petMap.containsKey(item.getId());
     }
 
     @NotNull
