@@ -20,13 +20,8 @@ public class SelectSort implements Sort {
     }
 
     /**
-     * Метод сортирует массив по следующим правилам:
-     * <ul>
-     * <li>Первые идут мужчины</li>
-     * <li>Выше в списке тот, кто более старший</li>
-     * <li>Имена сортируются по алфавиту</li>
-     * </ul>
-     * @throws EqualNameAndAgeException
+     * Метод сортирует массив, если {@code compareTo} возвращает 1.
+     * @throws EqualNameAndAgeException, если встречаются два одинаковых объекта.
      */
     public void sortingObject() throws EqualNameAndAgeException {
         long start = System.currentTimeMillis();
@@ -39,31 +34,13 @@ public class SelectSort implements Sort {
                 if (p1.isEqualsNameAndAge(p2))
                     throw new EqualNameAndAgeException("Найдены объекты с одинаковым именем и возрастом");
 
-                if (p1.isWoman() && p2.isMan()) {
+                if (p1.compareTo(p2) == 1)
                     max = j;
-                } else if (p1.isMan() && p2.isMan()) {
-                    if (sortingAgeOrName(p1, p2))
-                        max = j;
-                } else if (p1.isWoman() && p2.isWoman()) {
-                    if (sortingAgeOrName(p1, p2))
-                        max = j;
-                }
             }
             swap(i, max);
         }
         timeSort = System.currentTimeMillis() - start;
         LOGGER.info("Массив успешно отсортирован методом выбора");
-    }
-
-    private boolean sortingAgeOrName(Person p1, Person p2) {
-        if (p1.getAge() < p2.getAge()) {
-            return true;
-        } else if (p1.getAge() == p2.getAge()) {
-            if (p1.getName().compareTo(p2.getName()) > 0) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private void swap(int one, int two) {

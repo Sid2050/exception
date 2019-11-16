@@ -1,4 +1,7 @@
-package part1.lesson02.task03;
+package part1.lesson05.task01;
+
+
+import part1.lesson05.task01.enums.Sex;
 
 /**
  * Класс персоны со свойствами <b>age</b>, <b>sex</b> и <b>name</b>.
@@ -45,34 +48,9 @@ public class Person implements Comparable<Person> {
     public String toString() {
         return "Person{" +
                 "age=" + age +
-                ", sex=" + sex +
+                ", sex=" + sex.getSex() +
                 ", name='" + name + '\'' +
                 '}';
-    }
-
-    /**
-     * Метод проверяет, является ли пол данного объекта Мужским.
-     * @return мужской пол объекта или нет
-     */
-    public boolean isMan() {
-        return sex == Sex.MAN;
-    }
-
-    /**
-     * Метод проверяет, является ли пол данного объекта Женским.
-     * @return женский пол объекта или нет
-     */
-    public boolean isWoman() {
-        return sex == Sex.WOMAN;
-    }
-
-    /**
-     * Метод проверяет, одинаковое ли имя и возраст у объектов
-     * @param p объект класса {@link Person}
-     * @return равно имя и возраст
-     */
-    public boolean isEqualsNameAndAge(Person p) {
-        return (name.equals(p.getName())) && (age == p.getAge());
     }
 
     /**
@@ -97,6 +75,36 @@ public class Person implements Comparable<Person> {
         if (result != 0)
             return result;
         result = o.name.compareTo(name);
+        return result;
+    }
+
+    /**
+     * Метод сравнивает два объекта.
+     * @param o объект с которым надо сравнить.
+     * @return {@code true}, если объект полностью идентичен;
+     *         {@code false} в остальных случаях.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Person person = (Person) o;
+
+        if (age != person.age) return false;
+        if (sex != person.sex) return false;
+        return name != null ? name.equals(person.name) : person.name == null;
+    }
+
+    /**
+     * Метод генерирует хеш-код.
+     * @return хеш-код объекта.
+     */
+    @Override
+    public int hashCode() {
+        int result = age;
+        result = 31 * result + (sex != null ? sex.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 }

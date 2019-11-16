@@ -20,13 +20,8 @@ public class BubbleSort implements Sort {
     }
 
     /**
-     * Метод сортирует массив по следующим правилам:
-     * <ul>
-     * <li>Первые идут мужчины</li>
-     * <li>Выше в списке тот, кто более старший</li>
-     * <li>Имена сортируются по алфавиту</li>
-     * </ul>
-     * @throws EqualNameAndAgeException
+     * Метод сортирует массив, если {@code compareTo} возвращает 1.
+     * @throws EqualNameAndAgeException, если встречаются два одинаковых объекта.
      */
     public void sortingObject() throws EqualNameAndAgeException {
         long start = System.currentTimeMillis();
@@ -37,27 +32,12 @@ public class BubbleSort implements Sort {
                 if (p1.isEqualsNameAndAge(p2))
                     throw new EqualNameAndAgeException("Найдены объекты с одинаковым именем и возрастом");
 
-                if (p1.isWoman() && p2.isMan()) {
+                if (p1.compareTo(p2) == 1)
                     swap(i, j);
-                } else if (p1.isMan() && p2.isMan()) {
-                    sortingAgeOrName(i, j, p1, p2);
-                } else if (p1.isWoman() && p2.isWoman()) {
-                    sortingAgeOrName(i, j, p1, p2);
-                }
             }
         }
         timeSort = System.currentTimeMillis() - start;
         LOGGER.info("Массив успешно отсортирован методом пузырька");
-    }
-
-    private void sortingAgeOrName(int i, int j, Person p1, Person p2) {
-        if (p1.getAge() < p2.getAge()) {
-            swap(i, j);
-        } else if (p1.getAge() == p2.getAge()) {
-            if (p1.getName().compareTo(p2.getName()) > 0) {
-                swap(i, j);
-            }
-        }
     }
 
     private void swap(int one, int two) {
