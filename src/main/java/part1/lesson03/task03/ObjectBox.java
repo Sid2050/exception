@@ -57,4 +57,23 @@ public class ObjectBox {
                 "set=" + set +
                 '}';
     }
+
+    public Set<Object> getSet() {
+        return set;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ObjectBox objectBox = (ObjectBox) o;
+
+        return set != null ? set.equals(objectBox.set) : objectBox.set == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return set != null ? set.hashCode() : 0;
+    }
 }

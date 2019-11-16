@@ -10,10 +10,14 @@ public class Main {
         ObjectBox mathBox = new MathBox();
         try {
             mathBox.addObject(new Integer(3));
-            mathBox.addObject(new Object());
+            mathBox.addObject(new Double(12.9));
         } catch (TryAddObjectException e) {
             System.out.println(e.getMessage());
         }
+
+        System.out.println(mathBox.dump());
+        System.out.println(((MathBox) mathBox).summator());
+
     }
 
 

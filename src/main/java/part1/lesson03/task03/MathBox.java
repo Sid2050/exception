@@ -14,28 +14,25 @@ import java.util.*;
  * </ul>
  * @autor Aleksey Danilchik
  */
-public class MathBox<T extends Number> extends ObjectBox {
+public class MathBox extends ObjectBox {
     private UUID id;
-    private Set<T> set;
 
     public MathBox() {
         id = UUID.randomUUID();
-        set = new HashSet<>();
     }
 
     /**
      * Конструктор - инициализирует коллекцию и заполняет её данными из массива.
      * @param arr массив объектов типа {@code Number}.
      */
-    public MathBox(T[] arr) throws TryAddObjectException {
+    public MathBox(Number[] arr) throws TryAddObjectException {
         id = UUID.randomUUID();
-        set = new HashSet<>();
         fillSet(arr);
     }
 
-    private void fillSet(T[] arr) throws TryAddObjectException {
+    private void fillSet(Number[] arr) throws TryAddObjectException {
         for (int i = 0; i < arr.length; i++) {
-            set.add(arr[i]);
+            super.getSet().add(arr[i]);
         }
     }
 
@@ -45,8 +42,10 @@ public class MathBox<T extends Number> extends ObjectBox {
      */
     public double summator() {
         double sum = 0;
-        for (T number : set) {
-            sum += number.doubleValue();
+        for (Object number : super.getSet()) {
+            if (number instanceof Number) {
+                sum += ((Number)number).doubleValue();
+            }
         }
         return sum;
     }
@@ -59,8 +58,10 @@ public class MathBox<T extends Number> extends ObjectBox {
      */
     public List<Double> splitter(int devider) {
         List<Double> temp = new ArrayList<>();
-        for (T number : set) {
-            temp.add(number.doubleValue() / devider);
+        for (Object number : super.getSet()) {
+            if (number instanceof Number) {
+                temp.add(((Number)number).doubleValue() / devider);
+            }
         }
         return temp;
     }
@@ -72,9 +73,9 @@ public class MathBox<T extends Number> extends ObjectBox {
      *         {@code false} в остальных случаях.
      */
     public boolean removeIntFromCollection(Integer integer) {
-        for (T number : set) {
+        for (Object number : super.getSet()) {
             if (integer.equals(number)) {
-                set.remove(number);
+                super.getSet().remove(number);
                 return true;
             }
         }
@@ -102,8 +103,7 @@ public class MathBox<T extends Number> extends ObjectBox {
 
         MathBox mathBox = (MathBox) o;
 
-        if (id != null ? !id.equals(mathBox.id) : mathBox.id != null) return false;
-        return set != null ? set.equals(mathBox.set) : mathBox.set == null;
+        return (id != null ? id.equals(mathBox.id) : mathBox.id == null) && super.equals(o);
     }
 
     @Override
