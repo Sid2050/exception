@@ -10,7 +10,6 @@ import java.util.TreeSet;
  * @autor Aleksey Danilchik
  */
 public class CollectionOfUniqueWords {
-    private String[] simvols = {".", ",", "!", "/?", ":", ";", "-"};
     private IgnoreCaseComparator ignoreCaseComparator;
     private Set<String> uniqueWords;
 
@@ -32,17 +31,14 @@ public class CollectionOfUniqueWords {
 
     private void addWords(String[] arr) {
         for (int i = 0; i < arr.length; i++) {
-            if (!arr[i].equals("")) {
+            if (!"".equals(arr[i])) {
                 uniqueWords.add(arr[i]);
             }
         }
     }
 
     private String processingString(String value) {
-        for (int i = 0; i < simvols.length; i++) {
-            value = value.replace(simvols[i], "");
-        }
-        return value;
+        return value.replaceAll("\\pP", "");
     }
 
     /**
