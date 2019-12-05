@@ -1,8 +1,7 @@
 package part3.lesson15.pojo;
 
-import java.util.Date;
-
 /**
+ * Класс-представление объекта из таблицы {@code user}.
  * @autor Aleksey Danilchik
  */
 public class User {

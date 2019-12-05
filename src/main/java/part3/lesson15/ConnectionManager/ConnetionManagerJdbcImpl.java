@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
+ * Класс-реализация получения объекта {@code Connection} к БД {@code MySQL} через {@code jdbc}-драйвер.
  * @autor Aleksey Danilchik
  */
 public class ConnetionManagerJdbcImpl implements ConnectionManager {
@@ -21,6 +22,10 @@ public class ConnetionManagerJdbcImpl implements ConnectionManager {
 
     private ConnetionManagerJdbcImpl() {}
 
+    /**
+     * Статический метод получения объекта класса {@link ConnectionManager}.
+     * @return объект {@code ConnetionManagerJdbcImpl}.
+     */
     public static ConnectionManager getInstance() {
         if (connectonManager == null) {
             connectonManager = new ConnetionManagerJdbcImpl();
@@ -28,9 +33,13 @@ public class ConnetionManagerJdbcImpl implements ConnectionManager {
         return connectonManager;
     }
 
+    /**
+     * Статический метод получения объекта класса {@link Connection}.
+     * @return объект {@code Connection}.
+     */
     @Override
     public Connection getConnection() {
-        ConnetionManagerJdbcImpl.getFillDataConnectionDb();
+        ConnetionManagerJdbcImpl.getDataConnectionDb();
         Connection connection = null;
         try {
             Class.forName(driverDB);
@@ -41,7 +50,7 @@ public class ConnetionManagerJdbcImpl implements ConnectionManager {
         return connection;
     }
 
-    private static void getFillDataConnectionDb() {
+    private static void getDataConnectionDb() {
         Properties properties = new Properties();
         try (InputStream inputStream = connectonManager.getClass().getResourceAsStream(PATH_PROP)) {
             properties.load(inputStream);

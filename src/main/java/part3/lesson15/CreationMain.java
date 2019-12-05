@@ -25,7 +25,6 @@ public class CreationMain {
     private static void createAndFillUser(Statement statement) {
         try {
             statement.execute("-- Database: homework\n"
-//                    + "USE homework; \n"
 //                    + "DROP TABLE user_role; \n"
 //                    + "DROP TABLE user; \n"
 //                    + "CREATE TABLE user ("
@@ -76,7 +75,7 @@ public class CreationMain {
     private static void createAndFillUserRole(Statement statement) {
         try {
             statement.execute("-- Database: homework\n"
-//                    + "DROP TABLE IF EXISTS user_role;"
+//                    + "DROP TABLE user_role;"
 //                    + "CREATE TABLE user_role (\n"
 //                    +   "id INT NOT NULL AUTO_INCREMENT,\n"
 //                    +   "user_id INT NULL,\n"
