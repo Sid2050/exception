@@ -1,5 +1,8 @@
 package part3.lesson15.ConnectionManager;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -18,6 +21,8 @@ public class ConnetionManagerJdbcImpl implements ConnectionManager {
     private static String password;
     private static String url;
 
+    private static final Logger LOGGER = LogManager.getLogger(ConnetionManagerJdbcImpl.class);
+
     private static final String PATH_PROP = "/part3.lesson15.ConnectionManager/file-propDB.properties";
 
     private ConnetionManagerJdbcImpl() {}
@@ -29,7 +34,9 @@ public class ConnetionManagerJdbcImpl implements ConnectionManager {
     public static ConnectionManager getInstance() {
         if (connectonManager == null) {
             connectonManager = new ConnetionManagerJdbcImpl();
+            LOGGER.info("Метод getInstance. Объект создан");
         }
+        LOGGER.info("Метод getInstance. Объект получен");
         return connectonManager;
     }
 
@@ -45,8 +52,9 @@ public class ConnetionManagerJdbcImpl implements ConnectionManager {
             Class.forName(driverDB);
             connection = DriverManager.getConnection(url, userName, password);
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Ошибка в методе getConnection", e);
         }
+        LOGGER.info("Метод getConnection. Соединение установлено");
         return connection;
     }
 
@@ -60,7 +68,8 @@ public class ConnetionManagerJdbcImpl implements ConnectionManager {
             password = properties.getProperty("password");
             url = properties.getProperty("url");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Ошибка в методе getDataConnectionDb", e);
         }
+        LOGGER.info("Метод getDataConnectionDb. Успешно прочитаны данные");
     }
 }

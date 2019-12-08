@@ -13,4 +13,6 @@ public interface UserDao {
     boolean addUsersBatch(List<User> list);
     User getUserById(Integer id);
     User getUserByLoginIdAndName(String loginId, String name);
+    boolean updateUserById(User user);
+    boolean deleteUserById(Integer id);
 }
