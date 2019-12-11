@@ -3,10 +3,12 @@ package part3.lesson15.dao;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import part3.lesson15.ConnectionManager.ConnectionManager;
-import part3.lesson15.ConnectionManager.ConnetionManagerJdbcImpl;
 import part3.lesson15.pojo.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -14,12 +16,12 @@ import java.util.List;
  * @autor Aleksey Danilchik
  */
 public class UserDaoJdbcImpl implements UserDao {
-    public static final String INSERT_SQL = "INSERT INTO user VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)";
-    public static final String SELECT_SQL_BY_ID = "SELECT * FROM user WHERE id = ?";
-    public static final String SELECT_SQL_BY_LOGIN_ID_AND_NAME = "SELECT * FROM user WHERE login_ID = ? AND name = ?";
-    public static final String UPDATE_SQL_BY_ID = "UPDATE user SET name = ?, birthday = ?, login_ID = ?," +
+    protected static final String INSERT_SQL = "INSERT INTO user VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)";
+    protected static final String SELECT_SQL_BY_ID = "SELECT * FROM user WHERE id = ?";
+    protected static final String SELECT_SQL_BY_LOGIN_ID_AND_NAME = "SELECT * FROM user WHERE login_ID = ? AND name = ?";
+    protected static final String UPDATE_SQL_BY_ID = "UPDATE user SET name = ?, birthday = ?, login_ID = ?," +
                                                     "city = ?, email = ?, description = ? WHERE id = ?";
-    public static final String DELETE_SQL_BY_ID = "DELETE FROM user WHERE id = ?";
+    protected static final String DELETE_SQL_BY_ID = "DELETE FROM user WHERE id = ?";
 
     private static final Logger LOGGER = LogManager.getLogger(UserDaoJdbcImpl.class);
     private ConnectionManager connectionManager;

@@ -13,8 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -26,8 +25,6 @@ class UserDaoJdbcImplTest {
     private PreparedStatement preparedStatement;
     @Mock
     private ResultSet resultSet;
-
-
 
     @BeforeEach
     void setUp() {
@@ -42,7 +39,7 @@ class UserDaoJdbcImplTest {
     }
 
     @Test
-    void addUser() throws SQLException {
+    void addUserTrue() throws SQLException {
         when(connectionManager.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(UserDaoJdbcImpl.INSERT_SQL)).thenReturn(preparedStatement);
 
@@ -71,7 +68,19 @@ class UserDaoJdbcImplTest {
     }
 
     @Test
-    void getUserById() throws SQLException {
+    void addUserFalse() throws SQLException {
+        when(connectionManager.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(UserDaoJdbcImpl.INSERT_SQL)).thenThrow(new SQLException());
+
+        boolean result = userDao.addUser(new User());
+
+        verify(connectionManager, times(1)).getConnection();
+        verify(connection, times(1)).prepareStatement(UserDaoJdbcImpl.INSERT_SQL);
+        assertFalse(result);
+    }
+
+    @Test
+    void getUserByIdTrue() throws SQLException {
         when(connectionManager.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(UserDaoJdbcImpl.SELECT_SQL_BY_ID)).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
@@ -112,14 +121,107 @@ class UserDaoJdbcImplTest {
     }
 
     @Test
-    void updateUserById() {
+    void getUserByIdFalse() throws SQLException {
+        when(connectionManager.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(UserDaoJdbcImpl.SELECT_SQL_BY_ID)).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenThrow(new SQLException());
+
+        int id = 1;
+        User user = userDao.getUserById(id);
+
+        verify(connectionManager, times(1)).getConnection();
+        verify(connection, times(1)).prepareStatement(UserDaoJdbcImpl.SELECT_SQL_BY_ID);
+        verify(preparedStatement, times(1)).executeQuery();
+
+        assertEquals(null, user);
     }
 
     @Test
-    void deleteUserById() throws SQLException {
+    void updateUserByIdTrue() throws SQLException {
         when(connectionManager.getConnection()).thenReturn(connection);
-        when(connection.prepareStatement(UserDaoJdbcImpl.DELETE_SQL_BY_ID)).thenReturn(preparedStatement);
+        when(connection.prepareStatement(UserDaoJdbcImpl.UPDATE_SQL_BY_ID)).thenReturn(preparedStatement);
 
+        int id = 1;
+        String name = "name";
+        String birthday = "1900-01-01";
+        String login_ID = "t01";
+        String city = "city";
+        String email = "email@mail.ru";
+        String description = "description";
+        User user = new User(id, name, birthday, login_ID, city, email, description);
+        boolean result = userDao.updateUserById(user);
+
+        verify(connectionManager, times(1)).getConnection();
+        verify(connection, times(1)).prepareStatement(UserDaoJdbcImpl.UPDATE_SQL_BY_ID);
+        verify(preparedStatement, times(1)).setString(1, user.getName());
+        verify(preparedStatement, times(1)).setString(2, user.getBirthday());
+        verify(preparedStatement, times(1)).setString(3, user.getLoginId());
+        verify(preparedStatement, times(1)).setString(4, user.getCity());
+        verify(preparedStatement, times(1)).setString(5, user.getEmail());
+        verify(preparedStatement, times(1)).setString(6, user.getDescription());
+        verify(preparedStatement, times(1)).setInt(7, user.getId());
+        verify(preparedStatement, times(1)).executeUpdate();
+        assertTrue(result);
     }
 
+    @Test
+    void updateUserByIdFalse() throws SQLException {
+        when(connectionManager.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(UserDaoJdbcImpl.UPDATE_SQL_BY_ID)).thenReturn(preparedStatement);
+        when(preparedStatement.executeUpdate()).thenThrow(new SQLException());
+
+        int id = 1;
+        String name = "name";
+        String birthday = "1900-01-01";
+        String login_ID = "t01";
+        String city = "city";
+        String email = "email@mail.ru";
+        String description = "description";
+        User user = new User(id, name, birthday, login_ID, city, email, description);
+        boolean result = userDao.updateUserById(user);
+
+        verify(connectionManager, times(1)).getConnection();
+        verify(connection, times(1)).prepareStatement(UserDaoJdbcImpl.UPDATE_SQL_BY_ID);
+        verify(preparedStatement, times(1)).setString(1, user.getName());
+        verify(preparedStatement, times(1)).setString(2, user.getBirthday());
+        verify(preparedStatement, times(1)).setString(3, user.getLoginId());
+        verify(preparedStatement, times(1)).setString(4, user.getCity());
+        verify(preparedStatement, times(1)).setString(5, user.getEmail());
+        verify(preparedStatement, times(1)).setString(6, user.getDescription());
+        verify(preparedStatement, times(1)).setInt(7, user.getId());
+        verify(preparedStatement, times(1)).executeUpdate();
+        assertFalse(result);
+    }
+
+    @Test
+    void deleteUserByIdTrue() throws SQLException {
+        when(connectionManager.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(UserDaoJdbcImpl.DELETE_SQL_BY_ID)).thenReturn(preparedStatement);
+        when(preparedStatement.execute()).thenReturn(true);
+
+        int id  = 1;
+        boolean result = userDao.deleteUserById(id);
+
+        verify(connectionManager, times(1)).getConnection();
+        verify(connection, times(1)).prepareStatement(UserDaoJdbcImpl.DELETE_SQL_BY_ID);
+        verify(preparedStatement, times(1)).setInt(1, id);
+        verify(preparedStatement, times(1)).execute();
+        assertTrue(result);
+    }
+
+    @Test
+    void deleteUserByIdFalse() throws SQLException {
+        when(connectionManager.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(UserDaoJdbcImpl.DELETE_SQL_BY_ID)).thenReturn(preparedStatement);
+        when(preparedStatement.execute()).thenThrow(new SQLException());
+
+        int id  = 1;
+        boolean result = userDao.deleteUserById(id);
+
+        verify(connectionManager, times(1)).getConnection();
+        verify(connection, times(1)).prepareStatement(UserDaoJdbcImpl.DELETE_SQL_BY_ID);
+        verify(preparedStatement, times(1)).setInt(1, id);
+        verify(preparedStatement, times(1)).execute();
+        assertFalse(result);
+    }
 }
