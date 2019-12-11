@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
+ * Класс для создания таблиц и добавления тестовых данных.
  * @autor Aleksey Danilchik
  */
 public class CreationMain {
@@ -14,11 +15,14 @@ public class CreationMain {
         try (Connection connection = ConnetionManagerJdbcImpl.getInstance().getConnection();
              Statement statement = connection.createStatement()) {
 
-//            dropTableDB(statement);
+            dropTableDB(statement);
 
-            createAndFillUser(statement);
-            createAndFillRole(statement);
-            createAndFillUserRole(statement);
+            createUser(statement);
+            fillUser(statement);
+            createRole(statement);
+            fillRole(statement);
+            createUserRole(statement);
+            fillUserRole(statement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -26,17 +30,13 @@ public class CreationMain {
 
     private static void dropTableDB(Statement statement) {
         try {
-            statement.execute(
-//                    "SET FOREIGN_KEY_CHECKS=0; "
-                     "DROP TABLE IF EXISTS user, role, user_role; "
-//                    + "SET FOREIGN_KEY_CHECKS=1;"
-            );
+            statement.execute("DROP TABLE IF EXISTS user, role, user_role");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private static void createAndFillUser(Statement statement) {
+    private static void createUser(Statement statement) {
         try {
             statement.execute("-- Database: homework\n"
                     + "CREATE TABLE user ("
@@ -48,6 +48,15 @@ public class CreationMain {
                     +   "email VARCHAR(45) NULL, "
                     +   "description VARCHAR(255) NULL, "
                     + "PRIMARY KEY (id)); "
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void fillUser(Statement statement) {
+        try {
+            statement.execute("-- Database: homework\n"
                     + "INSERT INTO user (name, birthday, login_ID, city, email, description) "
                     + "VALUES "
                     +   "('Alex', '1987/07/23', 'cat1987', 'Krasnodar', 'mail@yandex.ru', ''),"
@@ -61,7 +70,7 @@ public class CreationMain {
         }
     }
 
-    private static void createAndFillRole(Statement statement) {
+    private static void createRole(Statement statement) {
         try {
             statement.execute("-- Database: homework\n"
                     + "CREATE TABLE role ("
@@ -70,6 +79,15 @@ public class CreationMain {
                     +   "(name IN ('Administration', 'Clients', 'Billing')), "
                     +   "description VARCHAR(255) NULL, "
                     + "PRIMARY KEY (id)); "
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void fillRole(Statement statement) {
+        try {
+            statement.execute("-- Database: homework\n"
                     + "INSERT INTO role (name, description) "
                     + "VALUES "
                     +   "('Administration', ''),"
@@ -81,7 +99,7 @@ public class CreationMain {
         }
     }
 
-    private static void createAndFillUserRole(Statement statement) {
+    private static void createUserRole(Statement statement) {
         try {
             statement.execute("-- Database: homework\n"
                     + "CREATE TABLE user_role ("
@@ -99,6 +117,15 @@ public class CreationMain {
                     +   "REFERENCES role (id) "
                     +   "ON DELETE CASCADE "
                     +   "ON UPDATE CASCADE); "
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void fillUserRole(Statement statement) {
+        try {
+            statement.execute("-- Database: homework\n"
                     + "INSERT INTO user_role (user_id, role_id) "
                     + "VALUES "
                     +   "(1, 1),"

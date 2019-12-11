@@ -1,6 +1,5 @@
 package part3.lesson15.dao;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -32,10 +31,6 @@ class UserDaoJdbcImplTest {
         connectionManager = spy(ConnetionManagerJdbcImpl.getInstance());
         connection = mock(Connection.class);
         userDao = new UserDaoJdbcImpl(connectionManager);
-    }
-
-    @AfterEach
-    void tearDown() {
     }
 
     @Test
