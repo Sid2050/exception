@@ -10,9 +10,14 @@ import java.util.List;
  */
 public interface UserDao {
     boolean addUser(User user);
-    boolean addUsersBatch(List<User> list);
+
     User getUserById(Integer id);
-    User getUserByLoginIdAndName(String loginId, String name);
+
+    User getUserByLoginId(String loginId);
+
     boolean updateUserById(User user);
+
     boolean deleteUserById(Integer id);
+
+    void createTable();
 }

@@ -9,19 +9,29 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Класс-реализация работы с объектом {@code User}.
  * @autor Aleksey Danilchik
  */
 public class UserDaoJdbcImpl implements UserDao {
-    protected static final String INSERT_SQL = "INSERT INTO user VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)";
-    protected static final String SELECT_SQL_BY_ID = "SELECT * FROM user WHERE id = ?";
-    protected static final String SELECT_SQL_BY_LOGIN_ID_AND_NAME = "SELECT * FROM user WHERE login_ID = ? AND name = ?";
-    protected static final String UPDATE_SQL_BY_ID = "UPDATE user SET name = ?, birthday = ?, login_ID = ?," +
+    private static final String INSERT_SQL = "INSERT INTO user VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)";
+    private static final String SELECT_SQL_BY_ID = "SELECT * FROM user WHERE id = ?";
+    private static final String SELECT_SQL_BY_LOGIN_ID = "SELECT * FROM user WHERE login_ID = ?";
+    private static final String UPDATE_SQL_BY_ID = "UPDATE user SET name = ?, birthday = ?, login_ID = ?," +
                                                     "city = ?, email = ?, description = ? WHERE id = ?";
-    protected static final String DELETE_SQL_BY_ID = "DELETE FROM user WHERE id = ?";
+    private static final String DELETE_SQL_BY_ID = "DELETE FROM user WHERE id = ?";
+    private static final String CREATE_TABLE_USER
+            = "DROP TABLE IF EXISTS user;\n"
+            + "CREATE TABLE user ("
+            +   "id INT NOT NULL AUTO_INCREMENT, "
+            +   "name VARCHAR(255) NULL, "
+            +   "birthday VARCHAR(45) NULL, "
+            +   "login_ID VARCHAR(45) NULL, "
+            +   "city VARCHAR(45) NULL, "
+            +   "email VARCHAR(45) NULL, "
+            +   "description VARCHAR(255) NULL, "
+            + "PRIMARY KEY (id)); ";
 
     private static final Logger LOGGER = LogManager.getLogger(UserDaoJdbcImpl.class);
     private ConnectionManager connectionManager;
@@ -47,37 +57,8 @@ public class UserDaoJdbcImpl implements UserDao {
             preparedStatement.setString(5, user.getEmail());
             preparedStatement.setString(6, user.getDescription());
             preparedStatement.executeUpdate();
-            LOGGER.info("Метод addUser. Объект user добавлен.");
         } catch (SQLException e) {
             LOGGER.error("Ошибка в методе addUser", e);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Метод добавляет объект {@code User} в базу данных используя пакетную вставку.
-     * @param list список объектов {@code User}.
-     * @return {@code true}, если данные успешно добавлены в таблицу,
-     *          {@code false} в противном случае.
-     */
-    @Override
-    public boolean addUsersBatch(List<User> list) {
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL)){
-            for (User user : list) {
-                preparedStatement.setString(1, user.getName());
-                preparedStatement.setString(2, user.getBirthday());
-                preparedStatement.setString(3, user.getLoginId());
-                preparedStatement.setString(4, user.getCity());
-                preparedStatement.setString(5, user.getEmail());
-                preparedStatement.setString(6, user.getDescription());
-                preparedStatement.addBatch();
-            }
-            preparedStatement.executeBatch();
-            LOGGER.info("Метод addUsersBatch. Объекты user добавлены.");
-        } catch (SQLException e) {
-            LOGGER.error("Ошибка в методе addUsersBatch", e);
             return false;
         }
         return true;
@@ -104,7 +85,6 @@ public class UserDaoJdbcImpl implements UserDao {
                         resultSet.getString(5),
                         resultSet.getString(6),
                         resultSet.getString(7));
-                LOGGER.info("Метод getUserById. Объект user с id " + id + " - получен.");
                 return user;
             }
         } catch (SQLException e) {
@@ -115,18 +95,16 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     /**
-     * Метод получает объект {@code User} из базы данных по {@code loginId} и {@code name}.
+     * Метод получает объект {@code User} из базы данных по {@code loginId}.
      * @param loginId {@code loginId} объекта.
-     * @param name {@code name} объекта.
      * @return объект типа {@link User}.
      */
     @Override
-    public User getUserByLoginIdAndName(String loginId, String name) {
+    public User getUserByLoginId(String loginId) {
         User user = null;
         try (Connection connection = connectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SQL_BY_LOGIN_ID_AND_NAME)){
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SQL_BY_LOGIN_ID)){
             preparedStatement.setString(1, loginId);
-            preparedStatement.setString(2, name);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User(
@@ -137,15 +115,12 @@ public class UserDaoJdbcImpl implements UserDao {
                         resultSet.getString(5),
                         resultSet.getString(6),
                         resultSet.getString(7));
-                LOGGER.info("Метод getUserByLoginIdAndName. Объект user с login_Id " + loginId
-                        + " и name " + name + " - получен.");
                 return user;
             }
         } catch (SQLException e) {
-            LOGGER.error("Ошибка в методе getUserByLoginIdAndName", e);
+            LOGGER.error("Ошибка в методе getUserByLoginId", e);
         }
-        LOGGER.info("Метод getUserByLoginIdAndName. Объект user с login_Id " + loginId
-                + " и name " + name + " - не найден.");
+        LOGGER.info("Метод getUserByLoginIdAndName. Объект user с login_Id " + loginId + " - не найден.");
         return user;
     }
 
@@ -166,7 +141,6 @@ public class UserDaoJdbcImpl implements UserDao {
             preparedStatement.setString(5, user.getEmail());
             preparedStatement.setString(6, user.getDescription());
             preparedStatement.setInt(7, user.getId());
-            LOGGER.info("Метод updateUserById. Обновлен " + preparedStatement.executeUpdate() + " объект.");
         } catch (SQLException e) {
             LOGGER.error("Ошибка в методе updateUserById", e);
             return false;
@@ -186,11 +160,20 @@ public class UserDaoJdbcImpl implements UserDao {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL_BY_ID)) {
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
-            LOGGER.info("Метод deleteUserById. Объект удалён.");
         } catch (SQLException e) {
             LOGGER.error("Ошибка в методе deleteUserById", e);
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void createTable() {
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TABLE_USER)) {
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            LOGGER.error("Some thing wrong in createTable method", e);
+        }
     }
 }
