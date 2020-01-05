@@ -37,12 +37,12 @@ public class MobileDaoJdbcImpl implements MobileDao {
 
     @Inject
     public MobileDaoJdbcImpl(ConnectionManager connectionManager) {
-    this.connectionManager = connectionManager;
+        this.connectionManager = connectionManager;
     }
 
     @Override
     public boolean addMobile(Mobile mobile) {
-    try (Connection connection = connectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
                          PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO_MOBILE)) {
             preparedStatement.setString(1, mobile.getModel());
             preparedStatement.setInt(2, mobile.getPrice());

@@ -14,14 +14,14 @@ import java.io.IOException;
 
 @WebServlet("/showmobile")
 public class ShowMobileServlet extends HttpServlet {
-    @Inject
+//    @Inject
     private MobileDao mobileDao;
 
-//    @Override
-//    public void init() throws ServletException {
-//        mobileDao = (MobileDao) getServletContext().getAttribute("dao");
-//        super.init();
-//    }
+    @Override
+    public void init() throws ServletException {
+        mobileDao = (MobileDao) getServletContext().getAttribute("dao");
+        super.init();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -3,6 +3,7 @@ package part3.lesson15.ConnectionManager;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import javax.ejb.EJB;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -14,6 +15,7 @@ import java.util.Properties;
  * Класс-реализация получения объекта {@code Connection} к БД {@code MySQL} через {@code jdbc}-драйвер.
  * @autor Aleksey Danilchik
  */
+@EJB
 public class ConnetionManagerJdbcImpl implements ConnectionManager {
     private static ConnectionManager connectonManager;
     private static String driverDB;
@@ -67,6 +69,10 @@ public class ConnetionManagerJdbcImpl implements ConnectionManager {
             userName = properties.getProperty("userName");
             password = properties.getProperty("password");
             url = properties.getProperty("url");
+//            driverDB = "com.mysql.cj.jdbc.Driver";
+//            userName = "root";
+//            password = "qwerty";
+//            url = "jdbc:mysql://host.docker.internal:3306/homework?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDatetimeCode=false&amp&serverTimezone=UTC";
         } catch (IOException e) {
             LOGGER.error("Ошибка в методе getDataConnectionDb", e);
         }

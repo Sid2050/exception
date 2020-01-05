@@ -1,6 +1,8 @@
 package part3.lesson15.servlet;
 
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import part3.lesson15.dao.MobileDao;
 import part3.lesson15.pojo.Mobile;
 
@@ -14,18 +16,20 @@ import java.io.IOException;
 
 @WebServlet("/addmobile")
 public class AddMobileServlet extends HttpServlet {
+    private  Logger logger = LogManager.getLogger(AddMobileServlet.class);
 
-    @Inject
+//    @Inject
     private MobileDao mobileDao;
 
-//    @Override
-//    public void init() throws ServletException {
-//        mobileDao = (MobileDao) getServletContext().getAttribute("dao");
-//        super.init();
-//    }
+    @Override
+    public void init() throws ServletException {
+        mobileDao = (MobileDao) getServletContext().getAttribute("dao");
+        super.init();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("AddMobileServlet - Метод doGet");
         req.setAttribute("PageTitle", "New Mobiles");
         req.setAttribute("PageBody", "form.jsp");
         req.getRequestDispatcher("/layout.jsp")
@@ -34,6 +38,7 @@ public class AddMobileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        logger.info("AddMobileServlet - Метод doPost");
         req.setCharacterEncoding("utf-8");
         String model = req.getParameter("model");
         String price = req.getParameter("price");
