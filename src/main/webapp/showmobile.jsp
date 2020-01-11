@@ -1,12 +1,19 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<ul class="list-group">
-   <li class="list-group-item">${mobile.id}</li>
-   <li class="list-group-item">${mobile.model}</li>
-   <li class="list-group-item">${mobile.price}</li>
-   <li class="list-group-item">${mobile.manufacturer}</li>
-</ul>
+<table>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">model</th>
+      <th scope="col">price</th>
+      <th scope="col">manufacturer</th>
+    </tr>
+    <tr>
+      <td>${mobile.id}</td>
+      <td>${mobile.model}</td>
+      <td>${mobile.price}</td>
+      <td>${mobile.manufacturer}</td>
+    </tr>
+</table>
 
 <br>
-<a href="/mobiles/">Main page</a>
+<a href="/mobiles/mainpage.jsp">Main page</a>

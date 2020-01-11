@@ -1,4 +1,4 @@
-<%@tag description="Main layout" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
+<%@tag description="Main layout" pageEncoding="UTF-8" %>
 <%@attribute name="header" fragment="true" required="false" %>
 <html>
     <head>

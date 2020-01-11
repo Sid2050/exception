@@ -1,17 +1,10 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ taglib uri="/WEB-INF/date.tld" prefix="datetag" %>
-<%@taglib prefix="myTags" tagdir="/WEB-INF/tags" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
-<myTags:template>
-    <jsp:attribute name="header">
-        <h1>Mobiles</h1>
-        (<datetag:DateTag plus="0"/>)
-    </jsp:attribute>
-    <jsp:body>
-        <ul>
-            <li><a href="${pageContext.request.contextPath}/allmobiles">List mobiles</a></li>
-            <li><a href="${pageContext.request.contextPath}/addmobile">Add mobile</a></li>
-            <li>Test</li>
-        </ul>
-    </jsp:body>
-</myTags:template>
+<html>
+<head>
+    <title>Index page</title>
+</head>
+<body>
+    <a href="${pageContext.request.contextPath}/loginform.jsp">Login</a>
+</body>
+</html>

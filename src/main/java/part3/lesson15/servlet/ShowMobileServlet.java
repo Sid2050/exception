@@ -14,14 +14,8 @@ import java.io.IOException;
 
 @WebServlet("/showmobile")
 public class ShowMobileServlet extends HttpServlet {
-//    @Inject
+    @Inject
     private MobileDao mobileDao;
-
-    @Override
-    public void init() throws ServletException {
-        mobileDao = (MobileDao) getServletContext().getAttribute("dao");
-        super.init();
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,6 +30,10 @@ public class ShowMobileServlet extends HttpServlet {
             return;
         }
         req.setAttribute("mobile", mobile);
-        req.getRequestDispatcher("/showmobile.jsp").forward(req, resp);
+        req.setAttribute("PageTitle", "Mobile");
+        req.setAttribute("PageBody", "showmobile.jsp");
+        req.getRequestDispatcher("/layout.jsp").forward(req, resp);
+
+//        req.getRequestDispatcher("/showmobile.jsp").forward(req, resp);
     }
 }

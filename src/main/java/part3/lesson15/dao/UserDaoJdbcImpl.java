@@ -5,6 +5,8 @@ import org.apache.log4j.Logger;
 import part3.lesson15.ConnectionManager.ConnectionManager;
 import part3.lesson15.pojo.User;
 
+import javax.ejb.EJB;
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +16,7 @@ import java.sql.SQLException;
  * Класс-реализация работы с объектом {@code User}.
  * @autor Aleksey Danilchik
  */
+@EJB
 public class UserDaoJdbcImpl implements UserDao {
     private static final String INSERT_SQL = "INSERT INTO user VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)";
     private static final String SELECT_SQL_BY_ID = "SELECT * FROM user WHERE id = ?";
@@ -36,6 +39,7 @@ public class UserDaoJdbcImpl implements UserDao {
     private static final Logger LOGGER = LogManager.getLogger(UserDaoJdbcImpl.class);
     private ConnectionManager connectionManager;
 
+    @Inject
     public UserDaoJdbcImpl(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }

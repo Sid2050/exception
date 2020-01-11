@@ -6,7 +6,7 @@
     <jsp:setProperty name="mobile" property="price" value="0" />
 
 
-<h1>Adding a new student</h1>
+<h1>Adding a new mobile</h1>
 <form method="post" action="${pageContext.request.contextPath}/addmobile" autocomplete="off">
     <div class="form-group">
         <label for="model">Model</label>

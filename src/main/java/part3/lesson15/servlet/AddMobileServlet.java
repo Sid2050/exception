@@ -18,27 +18,24 @@ import java.io.IOException;
 public class AddMobileServlet extends HttpServlet {
     private  Logger logger = LogManager.getLogger(AddMobileServlet.class);
 
-//    @Inject
+    @Inject
     private MobileDao mobileDao;
 
-    @Override
-    public void init() throws ServletException {
-        mobileDao = (MobileDao) getServletContext().getAttribute("dao");
-        super.init();
-    }
+//    @Override
+//    public void init() throws ServletException {
+//        mobileDao = (MobileDao) getServletContext().getAttribute("dao");
+//        super.init();
+//    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("AddMobileServlet - Метод doGet");
         req.setAttribute("PageTitle", "New Mobiles");
-        req.setAttribute("PageBody", "form.jsp");
-        req.getRequestDispatcher("/layout.jsp")
-            .forward(req, resp);
+        req.setAttribute("PageBody", "addform.jsp");
+        req.getRequestDispatcher("/layout.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        logger.info("AddMobileServlet - Метод doPost");
         req.setCharacterEncoding("utf-8");
         String model = req.getParameter("model");
         String price = req.getParameter("price");

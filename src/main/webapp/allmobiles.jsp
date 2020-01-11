@@ -1,13 +1,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<table class="table">
+<table>
    <thead>
       <tr>
          <th scope="col">ID</th>
          <th scope="col">model</th>
          <th scope="col">price</th>
          <th scope="col">manufacturer</th>
+         <th scope="col">link mobile</th>
       </tr>
    </thead>
    <tbody>
@@ -24,4 +25,4 @@
 </table>
 
 <br>
-<a href="/mobiles/">Main page</a>
+<a href="/mobiles/mainpage.jsp">Main page</a>
