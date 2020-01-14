@@ -15,7 +15,7 @@ import java.util.Properties;
  * @autor Aleksey Danilchik
  */
 public class ConnetionManagerJdbcImpl implements ConnectionManager {
-    private static ConnectionManager connectonManager;
+    private static ConnectionManager connectionManager;
     private static String driverDB;
     private static String userName;
     private static String password;
@@ -32,12 +32,12 @@ public class ConnetionManagerJdbcImpl implements ConnectionManager {
      * @return объект {@code ConnetionManagerJdbcImpl}.
      */
     public static ConnectionManager getInstance() {
-        if (connectonManager == null) {
-            connectonManager = new ConnetionManagerJdbcImpl();
+        if (connectionManager == null) {
+            connectionManager = new ConnetionManagerJdbcImpl();
             LOGGER.info("Метод getInstance. Объект создан");
         }
         LOGGER.info("Метод getInstance. Объект получен");
-        return connectonManager;
+        return connectionManager;
     }
 
     /**
@@ -60,7 +60,7 @@ public class ConnetionManagerJdbcImpl implements ConnectionManager {
 
     private static void getDataConnectionDb() {
         Properties properties = new Properties();
-        try (InputStream inputStream = connectonManager.getClass().getResourceAsStream(PATH_PROP)) {
+        try (InputStream inputStream = connectionManager.getClass().getResourceAsStream(PATH_PROP)) {
             properties.load(inputStream);
 
             driverDB = properties.getProperty("driverDB");
