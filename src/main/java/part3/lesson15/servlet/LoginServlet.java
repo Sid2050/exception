@@ -9,12 +9,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
  * @autor Aleksey Danilchik
  */
-@WebServlet("/login")
+@WebServlet(urlPatterns = "/", loadOnStartup = 1)
 public class LoginServlet extends HttpServlet {
     @Inject
     private UserDao userDao;
@@ -31,6 +32,10 @@ public class LoginServlet extends HttpServlet {
         req.setCharacterEncoding("utf-8");
         String loginName = req.getParameter("loginId");
         User user = userDao.getUserByLoginId(loginName);
+
+        HttpSession session = req.getSession();
+        session.setAttribute("userLogin", user);
+
         if (user != null) {
             resp.sendRedirect(req.getContextPath() + "/mainpage.jsp");
         } else {

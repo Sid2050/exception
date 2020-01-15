@@ -1,4 +1,4 @@
-package part3.lesson15.servlet;
+package part3.lesson15.servlet.filter;
 
 
 import org.apache.log4j.LogManager;
