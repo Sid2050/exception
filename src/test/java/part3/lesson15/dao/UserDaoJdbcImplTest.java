@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import part3.lesson15.ConnectionManager.ConnectionManager;
-import part3.lesson15.ConnectionManager.ConnetionManagerJdbcImpl;
+import part3.lesson15.ConnectionManager.ConnectionManagerJdbcImpl;
 import part3.lesson15.pojo.User;
 
 import java.sql.Connection;
@@ -28,7 +28,7 @@ class UserDaoJdbcImplTest {
     @BeforeEach
     void setUp() {
         initMocks(this);
-        connectionManager = spy(ConnetionManagerJdbcImpl.getInstance());
+        connectionManager = spy(ConnectionManagerJdbcImpl.getInstance());
         connection = mock(Connection.class);
         userDao = new UserDaoJdbcImpl(connectionManager);
     }

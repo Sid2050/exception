@@ -6,7 +6,7 @@ package part3.lesson15.ConnectionManager;
 public class ConnectionManagerFactory {
     public ConnectionManager create(String manager) {
         if ("jdbc".equals(manager)) {
-            return ConnetionManagerJdbcImpl.getInstance();
+            return ConnectionManagerJdbcImpl.getInstance();
         }
         return null;
     }

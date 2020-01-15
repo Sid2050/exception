@@ -1,6 +1,6 @@
 package part3.lesson15;
 
-import part3.lesson15.ConnectionManager.ConnetionManagerJdbcImpl;
+import part3.lesson15.ConnectionManager.ConnectionManagerJdbcImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,7 +12,7 @@ import java.sql.Statement;
  */
 public class CreationMain {
     public static void main(String[] args) {
-        try (Connection connection = ConnetionManagerJdbcImpl.getInstance().getConnection();
+        try (Connection connection = ConnectionManagerJdbcImpl.getInstance().getConnection();
              Statement statement = connection.createStatement()) {
 
             dropTableDB(statement);

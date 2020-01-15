@@ -14,26 +14,26 @@ import java.util.Properties;
  * Класс-реализация получения объекта {@code Connection} к БД {@code MySQL} через {@code jdbc}-драйвер.
  * @autor Aleksey Danilchik
  */
-public class ConnetionManagerJdbcImpl implements ConnectionManager {
+public class ConnectionManagerJdbcImpl implements ConnectionManager {
     private static ConnectionManager connectionManager;
     private static String driverDB;
     private static String userName;
     private static String password;
     private static String url;
 
-    private static final Logger LOGGER = LogManager.getLogger(ConnetionManagerJdbcImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ConnectionManagerJdbcImpl.class);
 
     private static final String PATH_PROP = "/part3.lesson15.ConnectionManager/file-propDB.properties";
 
-    private ConnetionManagerJdbcImpl() {}
+    private ConnectionManagerJdbcImpl() {}
 
     /**
      * Статический метод получения объекта класса {@link ConnectionManager}.
-     * @return объект {@code ConnetionManagerJdbcImpl}.
+     * @return объект {@code ConnectionManagerJdbcImpl}.
      */
     public static ConnectionManager getInstance() {
         if (connectionManager == null) {
-            connectionManager = new ConnetionManagerJdbcImpl();
+            connectionManager = new ConnectionManagerJdbcImpl();
             LOGGER.info("Метод getInstance. Объект создан");
         }
         LOGGER.info("Метод getInstance. Объект получен");
@@ -46,7 +46,7 @@ public class ConnetionManagerJdbcImpl implements ConnectionManager {
      */
     @Override
     public Connection getConnection() {
-        ConnetionManagerJdbcImpl.getDataConnectionDb();
+        ConnectionManagerJdbcImpl.getDataConnectionDb();
         Connection connection = null;
         try {
             Class.forName(driverDB);
