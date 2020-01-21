@@ -15,32 +15,26 @@ public class Main {
         LOGGER.info("Задание 3. Программа запущена");
         GeneratePerson gp = new GeneratePerson(20);
         Person[] persons = gp.generationAndFillArray();
+        SimpleRemoteControl control = new SimpleRemoteControl();
 
         BubbleSort bubbleSort = new BubbleSort(Arrays.copyOf(persons, persons.length));
-        try {
-            bubbleSort.sortingObject();
-            bubbleSort.display();
-            System.out.println("Время сортировки массива пузырьком: " + bubbleSort.getTimeSorting() +
-                    " наносекунд");
-        } catch (EqualNameAndAgeException e) {
-            System.out.println("Не удалось отсортировать массив методом выбора.");
-            System.out.println(e.getMessage());
-            LOGGER.error(e.getMessage());
-        }
+        control.setCommand(new SortingPersonCommand(bubbleSort));
+        control.buttonWasPressed();
+        control.setCommand(new DisplayPersonCommand(bubbleSort));
+        control.buttonWasPressed();
+        System.out.println("Время сортировки массива пузырьком: " + bubbleSort.getTimeSorting() +
+                " наносекунд");
 
         System.out.println();
 
         SelectSort selectSort = new SelectSort(Arrays.copyOf(persons, persons.length));
-        try {
-            selectSort.sortingObject();
-            selectSort.display();
-            System.out.println("Время сортировки массива методом выбора: " + selectSort.getTimeSorting() +
-                                " наносекунд");
-        } catch (EqualNameAndAgeException e) {
-            System.out.println("Не удалось отсортировать массив методом выбора.");
-            System.out.println(e.getMessage());
-            LOGGER.error(e.getMessage());
-        }
+        control.setCommand(new SortingPersonCommand(selectSort));
+        control.buttonWasPressed();
+        control.setCommand(new DisplayPersonCommand(selectSort));
+        control.buttonWasPressed();
+        System.out.println("Время сортировки массива методом выбора: " + selectSort.getTimeSorting() +
+                            " наносекунд");
+
         LOGGER.info("Задание 3. Завершение работы программы");
     }
 }
