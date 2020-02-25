@@ -65,42 +65,33 @@ public class Serialization {
                 Field field = clazz.getDeclaredField(element.getName());
                 field.setAccessible(true);
                 switch (field.getType().getName()) {
-                    case "boolean": {
+                    case "boolean":
                         field.setBoolean(object, Boolean.valueOf(element.getValue()));
                         break;
-                    }
-                    case "java.lang.String": {
+                    case "java.lang.String":
                         field.set(object, element.getValue());
                         break;
-                    }
-                    case "byte": {
+                    case "byte":
                         field.setByte(object, Byte.valueOf(element.getValue()));
                         break;
-                    }
-                    case "char": {
+                    case "char":
                         field.setChar(object, element.getValue().charAt(0));
                         break;
-                    }
-                    case "double": {
+                    case "double":
                         field.setDouble(object, Double.valueOf(element.getValue()));
                         break;
-                    }
-                    case "float": {
+                    case "float":
                         field.setFloat(object, Float.valueOf(element.getValue()));
                         break;
-                    }
-                    case "int": {
+                    case "int":
                         field.setInt(object, Integer.valueOf(element.getValue()));
                         break;
-                    }
-                    case "long": {
+                    case "long":
                         field.setLong(object, Long.valueOf(element.getValue()));
                         break;
-                    }
-                    case "short": {
+                    case "short":
                         field.setShort(object, Short.valueOf(element.getValue()));
                         break;
-                    }
                 }
             }
         } catch (JDOMException | IOException |ClassNotFoundException |
